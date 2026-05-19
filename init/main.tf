@@ -13,7 +13,7 @@ terraform {
   }
 }
 
-# 1. provider 설정
+# provider 설정
 provider "aws" {
     region = "ap-northeast-2" # 서울 리전
 }
@@ -38,6 +38,7 @@ output "bucket_id" {
     description = "생성된 s3 버킷의 전역 고유 이름입니다."
 }
 
+# dynamodb table 만들기
 resource "aws_dynamodb_table" "terraform_lock" {
     name = "terraform-lock-test02" # 테이블명 마음대로 지을수 있다  
     billing_mode = "PAY_PER_REQUEST" # 비용 지불 방식 (요청 갯수당 과금하겠다 비용미미함)
