@@ -34,7 +34,7 @@ jobs:
       - name: Packer Init & Build     # 패커 초기화 & 이미지 빌드
         run: |
           packer init .
-          packer build
+          packer build .
         working-directory: ./packer
 
       - name: Setup Terraform         # 테라폼 설치
