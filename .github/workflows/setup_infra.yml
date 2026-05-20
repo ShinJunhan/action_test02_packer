@@ -5,18 +5,20 @@ name: 'Setup infra'
 on:
   push:
     branches:
-      - master  # master 브랜치에 push 하면서
+      - master
     paths:
-      - "terraform/**"   # terraform/ 하위 경로에 변화가 있을 때 동작
-  workflow_dispatch:  # 원할 때 실행할 수 있는 버튼을 github actions 에 만들어 지도록 한다
+      - "terraform/**"
+  workflow_dispatch: # 콜론(:)을 추가하여 섹션을 정의합니다.
 
-  jobs:
-    terraform-run:
-      runs-on: ubuntu-latest
-      steps:
+# jobs는 줄 맨 앞(Column 1)에서 시작해야 합니다.
+jobs:
+  terraform-run:
+    runs-on: ubuntu-latest
+    steps:
       # checkout 
       - name: Checkout Repository
         uses: actions/checkout@v4
+
       # aws 인증정보 제공 
       - name: Aws Configure 
         uses: aws-actions/configure-aws-credentials@v4
@@ -24,13 +26,14 @@ on:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2   
+
       # 테라폼 설치 
       - name: Setup Terraform 
-        uses: hashicorp/setup-terraform@v4
+        uses: hashicorp/setup-terraform@v3 # 최신 안정 버전 권장
+
        # ./terraform 안에 있는 terraform 자원을 init, apply
       - name: Terraform Init & Apply 
         run: |
           terraform init
           terraform apply --auto-approve
-        # ./terraform 폴더안에서 위의 명령어가 실행이 된다.
-        working-directory: ./terraform   
+        working-directory: ./terraform
